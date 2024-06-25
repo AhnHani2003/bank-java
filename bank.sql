@@ -24,6 +24,7 @@ CREATE TABLE transfer(
   account1id int NOT NULL,
   account2id int NOT NULL,
   moneytrans float NOT NULL,
+  content varchar(50) NOT NULL,
   timetrans datetime NOT NULL
 );
 ALTER TABLE transfer AUTO_INCREMENT=10001;
@@ -76,58 +77,28 @@ VALUES
 (987123, 'Tyler Smith', '2223334444', 'tyler@example.com', 'tylerpass', 2600.00, 100.00, 1000.00, NULL);
 
 
--- Example 1: Transfer from account 100000 to account 100001
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100000, 100001, 500.00, NOW());
-
--- Example 2: Transfer from account 100002 to account 100000
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100002, 100000, 300.00, NOW());
-
--- Example 3: Transfer from account 100001 to account 100002
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100001, 100002, 1000.00, NOW());
-
--- Example 4: Transfer from account 100003 to account 100001
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100003, 100001, 700.00, NOW());
-
--- Example 5: Transfer from account 100004 to account 100003
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100004, 100003, 200.00, NOW());
-
--- Example 6: Transfer from account 100005 to account 100002
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100005, 100002, 400.00, NOW());
-
--- Example 7: Transfer from account 100006 to account 100004
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100006, 100004, 600.00, NOW());
-
--- Example 8: Transfer from account 100007 to account 100005
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100007, 100005, 900.00, NOW());
-
--- Example 9: Transfer from account 100008 to account 100003
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100008, 100003, 1200.00, NOW());
-
--- Example 10: Transfer from account 100009 to account 100001
-INSERT INTO transfer (account1id, account2id, moneytrans, timetrans)
-VALUES (100009, 100001, 1500.00, NOW());
-
-
-SELECT a.accountid, b.moneytrans, b.timetrans,
-(a.balance - b.moneytrans) as newbalance
-FROM account a JOIN transfer b ON a.accountid = b.account1id;
-
-
-
-UPDATE account a
-JOIN transfer b ON a.accountid = b.account1id
-SET a.balance = a.balance - b.moneytrans
-WHERE a.accountid = b.account1id;
-
+INSERT INTO transfer (account1id, account2id, moneytrans, content, timetrans)
+VALUES 
+(100000, 100001, 500.00, 'Payment for services', NOW()),
+(100002, 100000, 300.00, 'Loan repayment', NOW()),
+(100001, 100002, 1000.00, 'Invoice payment', NOW()),
+(100003, 100001, 700.00, 'Gift', NOW()),
+(100004, 100003, 200.00, 'Dinner split', NOW()),
+(100005, 100002, 400.00, 'Rent payment', NOW()),
+(100006, 100004, 600.00, 'Utilities', NOW()),
+(100007, 100005, 900.00, 'Car repair', NOW()),
+(100008, 100003, 1200.00, 'Holiday fund', NOW()),
+(100009, 100001, 1500.00, 'Tuition fee', NOW()),
+(100010, 100007, 800.00, 'Subscription fee', NOW()),
+(100011, 100006, 450.00, 'Medical bill', NOW()),
+(100012, 100008, 650.00, 'Grocery shopping', NOW()),
+(100013, 100009, 250.00, 'Travel expense', NOW()),
+(100014, 100010, 550.00, 'Insurance', NOW()),
+(100015, 100011, 350.00, 'Pet care', NOW()),
+(100016, 100012, 750.00, 'Gym membership', NOW()),
+(100017, 100013, 500.00, 'Dining out', NOW()),
+(100018, 100014, 900.00, 'Event ticket', NOW()),
+(100019, 100015, 650.00, 'Book purchase', NOW());
 
 /****** Object:  Table water electricitybill*/
 CREATE TABLE electricitybill(
@@ -142,7 +113,29 @@ CREATE TABLE electricitybill(
 	transfee float NULL,
     timetrans datetime NOT NULL
 );
-    ALTER TABLE electricitybill AUTO_INCREMENT=000001;
+    ALTER TABLE electricitybill AUTO_INCREMENT=1;
+ALTER TABLE electricitybill
+ADD CONSTRAINT fk_accountid_electricitybill
+FOREIGN KEY (accountid) REFERENCES accountt(accountid);
+-- Inserting 15 example records
+INSERT INTO electricitybill (elecid, periodpay, accountid, ownername, owneraddress, bill, status, transfee, timetrans)
+VALUES
+(1, '2024-01-01', 100000, 'Alice Smith', '123 Main St, CityA', 75.50, 1, 5.00, NOW()),
+(2, '2024-01-02', 100001, 'Bob Johnson', '456 Elm St, CityB', 100.75, 0, 7.50, NOW()),
+(3, '2024-01-03', 100002, 'Charlie Brown', '789 Pine St, CityC', 50.25, 1, 4.00, NOW()),
+(4, '2024-01-04', 100003, 'Eve Johnson', '101 Maple St, CityD', 125.00, 0, 6.50, NOW()),
+(5, '2024-01-05', 100004, 'David Lee', '202 Oak St, CityE', 90.50, 1, 5.75, NOW()),
+(6, '2024-01-06', 100005, 'Grace Taylor', '303 Cedar St, CityF', 60.75, 0, 3.50, NOW()),
+(7, '2024-01-07', 100006, 'Frank White', '404 Birch St, CityG', 110.00, 1, 6.00, NOW()),
+(8, '2024-01-08', 100007, 'Hannah Brown', '505 Walnut St, CityH', 80.25, 0, 4.25, NOW()),
+(9, '2024-01-09', 100008, 'Ian Johnson', '606 Ash St, CityI', 95.50, 1, 5.00, NOW()),
+(10, '2024-01-10', 100009, 'Julia Davis', '707 Spruce St, CityJ', 85.75, 0, 4.75, NOW()),
+(11, '2024-01-11', 100010, 'Kevin Smith', '808 Redwood St, CityK', 70.00, 1, 3.75, NOW()),
+(12, '2024-01-12', 100011, 'Lily Johnson', '909 Cypress St, CityL', 105.25, 0, 6.25, NOW()),
+(13, '2024-01-13', 100012, 'Mark Brown', '1010 Fir St, CityM', 65.50, 1, 4.00, NOW()),
+(14, '2024-01-14', 100013, 'Natalie Green', '1111 Willow St, CityN', 120.75, 0, 7.00, NOW()),
+(15, '2024-01-15', 100014, 'Oliver Taylor', '1212 Poplar St, CityO', 55.00, 1, 3.25, NOW());
+
 
 /****** Object:  Table water bill*/
 CREATE TABLE waterbill(
@@ -158,4 +151,80 @@ CREATE TABLE waterbill(
 	transfee float NULL
 );
 ALTER TABLE waterbill AUTO_INCREMENT=000001;
+ALTER TABLE waterbill
+ADD CONSTRAINT fk_accountid_waterbill
+FOREIGN KEY (accountid) REFERENCES accountt(accountid);
 
+-- Inserting 15 example records
+INSERT INTO waterbill (waterid, periodpay, accountid, ownername, owneraddress, bill, status, timetrans, transfee)
+VALUES
+(1, '2024-01-01', 100000, 'Alice Smith', '123 Main St, CityA', 45.50, 1, NOW(), 2.50),
+(2, '2024-01-02', 100001, 'Bob Johnson', '456 Elm St, CityB', 60.75, 0, NOW(), 3.00),
+(3, '2024-01-03', 100002, 'Charlie Brown', '789 Pine St, CityC', 35.25, 1, NOW(), 1.50),
+(4, '2024-01-04', 100003, 'Eve Johnson', '101 Maple St, CityD', 80.00, 0, NOW(), 2.75),
+(5, '2024-01-05', 100004, 'David Lee', '202 Oak St, CityE', 55.50, 1, NOW(), 2.00),
+(6, '2024-01-06', 100005, 'Grace Taylor', '303 Cedar St, CityF', 40.75, 0, NOW(), 1.75),
+(7, '2024-01-07', 100006, 'Frank White', '404 Birch St, CityG', 70.00, 1, NOW(), 3.50),
+(8, '2024-01-08', 100007, 'Hannah Brown', '505 Walnut St, CityH', 50.25, 0, NOW(), 2.25),
+(9, '2024-01-09', 100008, 'Ian Johnson', '606 Ash St, CityI', 65.50, 1, NOW(), 2.75),
+(10, '2024-01-10', 100009, 'Julia Davis', '707 Spruce St, CityJ', 55.75, 0, NOW(), 2.50),
+(11, '2024-01-11', 100010, 'Kevin Smith', '808 Redwood St, CityK', 45.00, 1, NOW(), 1.75),
+(12, '2024-01-12', 100011, 'Lily Johnson', '909 Cypress St, CityL', 65.25, 0, NOW(), 2.50),
+(13, '2024-01-13', 100012, 'Mark Brown', '1010 Fir St, CityM', 50.50, 1, NOW(), 2.00),
+(14, '2024-01-14', 100013, 'Natalie Green', '1111 Willow St, CityN', 75.75, 0, NOW(), 3.00),
+(15, '2024-01-15', 100014, 'Oliver Taylor', '1212 Poplar St, CityO', 35.00, 1, NOW(), 1.25);
+CREATE TABLE loan(
+    loanid INT PRIMARY KEY AUTO_INCREMENT,
+    accountid INT NOT NULL,
+    amount FLOAT(50) NOT NULL,
+    interestrate FLOAT(5,2) NOT NULL,
+    startdate DATE NOT NULL,
+    enddate DATE NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    timetrans DATETIME NOT NULL,
+    FOREIGN KEY (accountid) REFERENCES accountt(accountid)
+);
+/*SELECT 
+    a.accountid, 
+    b.moneytrans, 
+    b.timetrans,
+    (a.balance - b.moneytrans) AS newbalance
+FROM 
+    accountt a 
+JOIN 
+    transfer b 
+ON 
+    a.accountid = b.account1id
+WHERE 
+    a.accountid = 100004;*/
+
+-- Creating saving table without savingtype
+CREATE TABLE saving(
+    savingid INT PRIMARY KEY AUTO_INCREMENT,
+    accountid INT NOT NULL,
+    amount FLOAT(50) NOT NULL,
+    interestrate FLOAT(5,2) NOT NULL,
+    startdate DATE NOT NULL,
+    enddate DATE NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    timetrans DATETIME NOT NULL,
+    FOREIGN KEY (accountid) REFERENCES accountt(accountid)
+);
+
+-- Inserting example records into loan table
+INSERT INTO loan (accountid, amount, interestrate, startdate, enddate, status, timetrans)
+VALUES
+(100000, 50000.00, 3.5, '2024-01-01', '2034-01-01', 'Active', NOW()),
+(100001, 20000.00, 4.0, '2024-02-01', '2029-02-01', 'Active', NOW()),
+(100002, 10000.00, 5.0, '2024-03-01', '2027-03-01', 'Active', NOW()),
+(100003, 15000.00, 3.8, '2024-04-01', '2028-04-01', 'Active', NOW()),
+(100004, 25000.00, 4.2, '2024-05-01', '2030-05-01', 'Active', NOW());
+
+-- Inserting example records into saving table
+INSERT INTO saving (accountid, amount, interestrate, startdate, enddate, status, timetrans)
+VALUES
+(100000, 10000.00, 2.5, '2024-01-01', '2025-01-01', 'Active', NOW()),
+(100001, 5000.00, 3.0, '2024-02-01', '2026-02-01', 'Active', NOW()),
+(100002, 2000.00, 1.5, '2024-03-01', '2025-03-01', 'Active', NOW()),
+(100003, 15000.00, 2.8, '2024-04-01', '2026-04-01', 'Active', NOW()),
+(100004, 8000.00, 1.7, '2024-05-01', '2025-05-01', 'Active', NOW());
